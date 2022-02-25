@@ -11,10 +11,17 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+CONFIG_FILE = BASE_DIR / 'config' / 'config.json'
 
+with open(CONFIG_FILE, 'r') as f:
+    data = json.load(f)
+
+PAYSTACK_PUBLIC_KEY = data['PAYSTACK_PUBLIC_KEY']
+PAYSTACK_SECRET_KEY = data['PAYSTACK_SECRET_KEY']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -37,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy-forms',
+    'crispy_forms',
     'core',
 ]
 
