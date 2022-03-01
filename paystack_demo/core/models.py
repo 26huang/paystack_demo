@@ -1,5 +1,6 @@
 from django.db import models
 import secrets
+from .paystack import PayStack
 
 
 # Create your models here.
@@ -26,4 +27,15 @@ class Payment(models.Model):
 
     def amount_value(self) -> int:
         return self.amount*100
+
+    def verify_payment(self):
+        paystack = PayStack()
+        status, result = paystack.verify_payment(self.ref, self.amount)
+        if status:
+            if result['amount'] / 100 == self.amount:
+                self.verified = True
+            self.save()
+            if self.verified:
+                return True
+        return False
 
